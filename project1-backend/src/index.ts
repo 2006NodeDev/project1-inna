@@ -7,6 +7,7 @@ import { BadCredentialsError } from './errors/BadCredentialsError'
 //import { AuthFailureError } from './errors/AuthFailureError'
 //import { authenticationMiddleware } from './middleware/authentication-middleware'
 import { getUsernameAndPassword } from './daos/users-dao'
+import { corsFilter } from './middleware/cors-filter'
 // mport { reimbursementRouter } from './routers/reimbursement-router'
 
 const app = express()
@@ -14,6 +15,7 @@ const app = express()
 app.use(express.json())
 
 app.use(loggingMiddleware);
+app.use(corsFilter);
 app.use(sessionMiddleware);
 
 
@@ -30,7 +32,7 @@ app.post('/login', async (req:Request, res:Response, next:NextFunction) =>{
     let password = req.body.password
 
     if(!username || !password){
-        throw new BadCredentialsError()
+        next(new BadCredentialsError())
     } else {
         try{
             let user = await getUsernameAndPassword(username, password)
