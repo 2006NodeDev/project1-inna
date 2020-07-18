@@ -1,9 +1,10 @@
 import React, { FunctionComponent, useState, SyntheticEvent } from 'react'
-import { TextField, Button, Paper, Typography, Link, Grid, Container } from '@material-ui/core'
+import { TextField, Button, Paper, Typography, Grid } from '@material-ui/core'
 import { userLogin } from '../../remote/users-api/user-login'
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import {RouteComponentProps} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 interface ILoginProps extends RouteComponentProps{
     changeCurrentUser:(newUser:any)=>void
@@ -76,7 +77,7 @@ export const LoginComponent:FunctionComponent<ILoginProps> = (props) => {
             </form>
             <Box m={1} pt={1}>
             <Typography variant='body1'>
-                Don't have an account? <Link>Sign Up!</Link>
+                Don't have an account? <Link to='/new'>Sign Up!</Link>
             </Typography>
             </Box>
             </Paper>

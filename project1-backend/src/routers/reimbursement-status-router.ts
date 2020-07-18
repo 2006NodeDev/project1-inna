@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express'
 import { StatusIdInputError } from '../errors/StatusIdInputError';
-import { getReimbursementByStatus } from '../daos/reimbursements-dao';
+import { getReimbursementByStatus } from '../daos/SQL/reimbursements-dao';
 import { authorizationMiddleware } from '../middleware/authorization-middleware';
 
 export let reimbursementStatusRouter = express()

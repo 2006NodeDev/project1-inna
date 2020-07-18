@@ -30,20 +30,20 @@ export const NavBarComponent:FunctionComponent<any> = (props)=>{
     };
 
 
-    let menuItems = []
-    menuItems.push(<MenuItem onClick={handleClose}><Link to='/login/'>Login</Link></MenuItem>)
-    if(props.user){
-      menuItems.push([<MenuItem onClick={handleClose}><Link to='/clicker'>Clicker</Link></MenuItem>,
-      <MenuItem onClick={handleClose}>My account</MenuItem>,
-      <MenuItem onClick={handleClose}>Logout</MenuItem>,
-      <MenuItem onClick={handleClose}><Link to={`/profile/${(props.user)?props.user.userId : '0'}`}>My Profile</Link></MenuItem> ])
-    }
+    // let menuItems = []
+    // menuItems.push(<MenuItem onClick={handleClose}><Link to='/login/'>Login</Link></MenuItem>)
+    // if(props.user){
+    //   menuItems.push([<MenuItem onClick={handleClose}><Link to='/clicker'>Clicker</Link></MenuItem>,
+    //   <MenuItem onClick={handleClose}>My account</MenuItem>,
+    //   <MenuItem onClick={handleClose}>Logout</MenuItem>,
+    //   <MenuItem onClick={handleClose}><Link to={`/profile/${(props.user)?props.user.userId : '0'}`}>My Profile</Link></MenuItem> ])
+    // }
 
     return(
         <nav>
         <AppBar position='static'>
             <Toolbar>
-          <IconButton onClick ={handleClick} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          {/* <IconButton onClick ={handleClick} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon/>
           </IconButton>
           <Menu id="simple-menu"
@@ -52,7 +52,7 @@ export const NavBarComponent:FunctionComponent<any> = (props)=>{
                     open={Boolean(anchorEl)}
                     onClose={handleClose}>
                     {menuItems}       
-          </Menu>
+          </Menu> */}
           <Typography variant="h6" className={classes.title}>
             innaConnection
           </Typography>

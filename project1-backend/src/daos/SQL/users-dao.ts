@@ -1,10 +1,10 @@
 import { PoolClient, QueryResult } from "pg";
 import { connectionPool } from ".";
-import { UserDTOtoUserConvertor } from "../utils/userDTO-to-user-convertor";
-import { UserNotFoundError } from "../errors/UserNotFoundError";
-import { User } from "../models/User";
-import { BadCredentialsError } from "../errors/BadCredentialsError";
-import { NewUserInputError } from "../errors/NewUserInputError";
+import { UserDTOtoUserConvertor } from "../../utils/userDTO-to-user-convertor";
+import { UserNotFoundError } from "../../errors/UserNotFoundError";
+import { User } from "../../models/User";
+import { BadCredentialsError } from "../../errors/BadCredentialsError";
+import { NewUserInputError } from "../../errors/NewUserInputError";
 //import { UsernameNotUniqueError } from "../errors/UsernameNotUniqueError";
 
 export async function getAllUsers():Promise<User[]>{
@@ -196,12 +196,14 @@ export async function saveNewUser(newUser:User):Promise<User>{
         // // }
         // console.log(usernameCheck)
 
-        let roleId = await client.query('select r.role_id from user_reimbursement.roles r where r.role = $1', [newUser.role])
+        // let roleId = await client.query('select r.role_id from user_reimbursement.roles r where r.role = $1', [newUser.role])
             
-        if(roleId.rowCount === 0){
-            throw new Error('Role Not Found.')
-        }
-        roleId = roleId.rows[0].role_id
+        // if(roleId.rowCount === 0){
+        //     throw new Error('Role Not Found.')
+        // }
+        // roleId = roleId.rows[0].role_id
+
+        let roleId = 3 
 
         let results = await client.query(` insert into user_reimbursement.users
         ("username", "password", "first_name", "last_name", "email", "role")

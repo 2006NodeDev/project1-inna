@@ -6,13 +6,13 @@ import { reimbursementRouter } from './routers/reimbursement-router'
 import { BadCredentialsError } from './errors/BadCredentialsError'
 //import { AuthFailureError } from './errors/AuthFailureError'
 //import { authenticationMiddleware } from './middleware/authentication-middleware'
-import { getUsernameAndPassword } from './daos/users-dao'
+import { getUsernameAndPassword } from './daos/SQL/users-dao'
 import { corsFilter } from './middleware/cors-filter'
 // mport { reimbursementRouter } from './routers/reimbursement-router'
 
 const app = express()
 
-app.use(express.json())
+app.use(express.json({limit:'50mb'}))
 
 app.use(loggingMiddleware);
 app.use(corsFilter);

@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express'
 import { UserIdInputError } from "../errors/UserIdInputError";
-import { getReimbursementByUser } from '../daos/reimbursements-dao';
+import { getReimbursementByUser } from '../daos/SQL/reimbursements-dao';
 import { authorizationMiddleware } from '../middleware/authorization-middleware';
 import { UnauthorizedEndPointError } from '../errors/UnathorizedEndPointError';
 

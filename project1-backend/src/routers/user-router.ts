@@ -1,11 +1,12 @@
 import express, { Request, Response, NextFunction} from 'express'
 import { UserIdInputError } from '../errors/UserIdInputError'
 import { User } from '../models/User'
-import { getAllUsers, getUserById, patchUser, saveNewUser } from '../daos/users-dao'
+import { getAllUsers, getUserById, patchUser, saveNewUser } from '../daos/SQL/users-dao'
 import { authorizationMiddleware } from '../middleware/authorization-middleware'
 import { authenticationMiddleware } from '../middleware/authentication-middleware'
 import { UnauthorizedEndPointError } from '../errors/UnathorizedEndPointError'
 import { NewUserInputError } from '../errors/NewUserInputError'
+import { getAllUsersService, getUserByIDService, saveNewUserService } from '../services/user-service'
 
 export let userRouter = express.Router()
 
@@ -13,7 +14,7 @@ userRouter.use(authenticationMiddleware);
 
 userRouter.get('/', authorizationMiddleware(['admin','finance-manager']), async  (req:Request, res:Response, next:NextFunction) => {
     try{
-        let allUsers = await getAllUsers()
+        let allUsers = await getAllUsersService()
         res.json(allUsers)
     }
     catch(e){
@@ -31,7 +32,7 @@ userRouter.get('/:id', authorizationMiddleware(['admin','finance-manager','user'
     }
     else{
         try{
-            let user = await getUserById(+id)
+            let user = await getUserByIDService(+id)
             res.json(user)
         } catch (e){
             next(e)
@@ -67,15 +68,14 @@ userRouter.patch('/', authorizationMiddleware(['admin']), async (req:Request, re
     }
 })
     
-userRouter.post('/', authorizationMiddleware(['admin','finance-manager','user']), async (req:Request, res:Response, next:NextFunction) => {
+userRouter.post('/', async (req:Request, res:Response, next:NextFunction) => {
     let {username,
         password,
         firstName,
         lastName,
-        email,
-        role} = req.body;
+        email} = req.body;
         
-        if(!username|| !password || !firstName || !lastName || !email || !role){
+        if(!username|| !password || !firstName || !lastName || !email ){
             next(new NewUserInputError)
         }
         else{
@@ -87,9 +87,9 @@ userRouter.post('/', authorizationMiddleware(['admin','finance-manager','user'])
                 firstName,
                 lastName,
                 email,
-                role}
+                role: null}
             try{
-                let savedUser = await saveNewUser(newUser)
+                let savedUser = await saveNewUserService(newUser)
                 res.status(201).send("Created")
                 res.json(savedUser)
             } catch (e){
