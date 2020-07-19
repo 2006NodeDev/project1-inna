@@ -1,10 +1,10 @@
 import { PoolClient, QueryResult } from "pg";
 import { connectionPool } from ".";
-import { StatusNotFoundError } from "../errors/StatusNotFoundError";
-import { ReimbursementDTOToReimbursementConvertor } from "../utils/reimbursementDTO-to-remibursement-convertor";
-import { Reimbursement } from "../models/Reimbursement";
-import { NewReimbursementInputError } from "../errors/NewReimbursementInputError";
-import { UserNotFoundError } from "../errors/UserNotFoundError";
+import { StatusNotFoundError } from "../../errors/StatusNotFoundError";
+import { ReimbursementDTOToReimbursementConvertor } from "../../utils/reimbursementDTO-to-remibursement-convertor";
+import { Reimbursement } from "../../models/Reimbursement";
+import { NewReimbursementInputError } from "../../errors/NewReimbursementInputError";
+import { UserNotFoundError } from "../../errors/UserNotFoundError";
 
 export async function getAllReimbursements():Promise<Reimbursement[]>{
     let client:PoolClient;

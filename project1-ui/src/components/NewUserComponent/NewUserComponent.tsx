@@ -1,10 +1,8 @@
 import React, { FunctionComponent, SyntheticEvent, useState } from 'react'
-import { Button, TextField } from '@material-ui/core'
+import { Button, TextField, Grid, Box } from '@material-ui/core'
 import { toast } from 'react-toastify'
 import { User } from '../../models/User'
 import { userSaveUser } from '../../remote/users-api/user-save-user'
-
-// did not finish updating this, got behind in class
 
 export const NewUserComponent:FunctionComponent<any> = (props) => {
     let [username, changeUsername] = useState('')
@@ -69,13 +67,15 @@ export const NewUserComponent:FunctionComponent<any> = (props) => {
                 email,
                 userId:0,
                 role: {
-                    roleId:NaN,
-                    role:""
+                    roleId:3,
+                    role:"user"
                 },
                 image
             }
-    
+            console.log('new user component')
+            console.log(newUser)
             let res = await userSaveUser(newUser) 
+            // props.history.push('/login')
         }
     }
 
@@ -83,18 +83,26 @@ export const NewUserComponent:FunctionComponent<any> = (props) => {
 
     return(
         <div>
+            <Grid container direction="column" justify="flex-start" alignItems="center">
             <form onSubmit={submitUser}>
+                <Box m={1} pt={2}>
                 <TextField id="standard-basic" label="Username" value={username} onChange={updateUsername}/>
                 <TextField id="standard-basic" type="password" label="Password" value={password} onChange={updatePassword}/>
                 <TextField id="standard-basic" type="password" label="Confirm Password" value={confirmPassword} onChange={updateConfirmPassword}/>
+                </Box>
+                <Box m={1} pt={2}>
                 <TextField id="standard-basic" label="First Name" value={firstName} onChange={updateFirstName}/>
-                <TextField id="standard-basic" label="Last Name" value={lastName} onChange={updateLastName}/>
+                <TextField id="standard-basic" label="Last Name" value={lastName} onChange={updateLastName}/>              
                 <TextField id="standard-basic" type="email" label="Email" value={email} onChange={updateEmail}/>
-                <label htmlFor='file'>Profile Picture</label>
+                </Box> 
+                <label htmlFor='file'>Profile Picture: </label>
                 <input type='file' name='file' accept='image/*' onChange={updateImage}/>
                 <img src={image}/>
+                <Box m={1} pt={2}>
                 <Button variant="contained" type="submit">Submit</Button>
+                </Box>
             </form>
+            </Grid>
         </div>
     )
 }

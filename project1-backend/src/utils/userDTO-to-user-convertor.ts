@@ -9,6 +9,7 @@ export function UserDTOtoUserConvertor(udto:UserDTO):User{
         firstName: udto.first_name,
         lastName: udto.last_name,
         email: udto.email,
-        role: udto.role
+        role: udto.role,
+        image:udto.image
     }
 }

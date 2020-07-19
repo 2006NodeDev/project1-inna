@@ -9,4 +9,5 @@ export class UserDTO {
     email: string 
     role: Role
     role_id: number
+    image?:string
 }

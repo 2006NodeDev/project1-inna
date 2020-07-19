@@ -5,6 +5,7 @@ import { UserNotFoundError } from "../../errors/UserNotFoundError";
 import { User } from "../../models/User";
 import { BadCredentialsError } from "../../errors/BadCredentialsError";
 import { NewUserInputError } from "../../errors/NewUserInputError";
+//import { NewUserInputError } from "../../errors/NewUserInputError";
 //import { UsernameNotUniqueError } from "../errors/UsernameNotUniqueError";
 
 export async function getAllUsers():Promise<User[]>{
@@ -18,7 +19,8 @@ export async function getAllUsers():Promise<User[]>{
         u.last_name, 
         u.email , 
         r.role_id , 
-        r."role" from user_reimbursement.users u left join user_reimbursement.roles r on u."role" = r.role_id;`)
+        r."role",
+        u."image" from user_reimbursement.users u left join user_reimbursement.roles r on u."role" = r.role_id;`)
         return results.rows.map(UserDTOtoUserConvertor);
     }
     catch(e){
@@ -41,7 +43,8 @@ export async function getUserById(id: number):Promise<User>{
         u.last_name, 
         u.email ,
         r.role_id , 
-        r."role" 
+        r."role",
+        u."image" 
         from user_reimbursement.users u left join user_reimbursement.roles r on u."role" = r.role_id 
         where u.user_id = $1;`,
         [id])
@@ -76,50 +79,56 @@ export async function patchUser(user:User):Promise<User>{
             throw new Error('User Not Found.')
         }
         userId = userId.rows[0].user_id
-  
+        console.log(userId)
 
-        if(user.username != undefined){
+        if(user.username){
             console.log("in the username")
-            let updateResults = await client.query(`update user_reimbursement.users 
+            await client.query(`update user_reimbursement.users 
             set "username" = $1 where user_id = $2;`,[user.username, userId])
-            console.log(updateResults.rows[0])
+            //console.log(updateResults.rows[0])
         }
-        if(user.password != undefined){
+        if(user.password){
             console.log("in the password")
-            let updateResults = await client.query(`update user_reimbursement.users 
+            await client.query(`update user_reimbursement.users 
             set "password" = $1 where user_id = $2;`,[user.password, userId])
-            console.log(updateResults.rows[0])
+            //console.log(updateResults.rows[0])
         }
-        if(user.firstName != undefined){
+        if(user.firstName){
             console.log("in the firstName")
-            let updateResults = await client.query(`update user_reimbursement.users 
+            await client.query(`update user_reimbursement.users 
             set "first_name" = $1 where user_id = $2;`,[user.firstName, userId])
-            console.log(updateResults.rows[0])
+            //console.log(updateResults.rows[0])
         }
-        if(user.lastName != undefined){
+        if(user.lastName){
             console.log("in the lastName")
-            let updateResults = await client.query(`update user_reimbursement.users 
+            await client.query(`update user_reimbursement.users 
             set "last_name" = $1 where user_id = $2;`,[user.lastName, userId])
-            console.log(updateResults.rows[0])
+            //console.log(updateResults.rows[0])
         }
-        if(user.email != undefined){
+        if(user.email){
             console.log("in the email")
-            let updateResults = await client.query(`update user_reimbursement.users 
-            set "last_name" = $1 where user_id = $2;`,[user.email, userId])
-            console.log(updateResults.rows[0])
+            await client.query(`update user_reimbursement.users 
+            set "email" = $1 where user_id = $2;`,[user.email, userId])
+            //console.log(updateResults.rows[0])
         }
-        if(user.role != undefined){
-            console.log("in the role")
-            let roleId = await client.query('select r.role_id from user_reimbursement.roles r where r.role = $1', [user.role])
+        // if(user.role != undefined){
+        //     console.log("in the role")
+        //     let roleId = await client.query('select r.role_id from user_reimbursement.roles r where r.role = $1', [user.role])
             
-            if(roleId.rowCount === 0){
-                throw new Error('Role Not Found.')
-            }
-            roleId = roleId.rows[0].role_id
+        //     if(roleId.rowCount === 0){
+        //         throw new Error('Role Not Found.')
+        //     }
+        //     roleId = roleId.rows[0].role_id
 
-            let updateResults = await client.query(`update user_reimbursement.users 
-            set "role" = $1 where user_id = $2;`,[roleId, userId])
-            console.log(updateResults.rows[0])
+        //     let updateResults = await client.query(`update user_reimbursement.users 
+        //     set "role" = $1 where user_id = $2;`,[roleId, userId])
+        //     console.log(updateResults.rows[0])
+        // }
+        if(user.image){
+            console.log("in the image")
+            await client.query(`update user_reimbursement.users 
+            set "image" = $1 where user_id = $2;`,[user.image, userId])
+            //console.log(updateResults.rows[0])
         }
 
         let result:QueryResult = await client.query(`select u.user_id, 
@@ -129,11 +138,13 @@ export async function patchUser(user:User):Promise<User>{
         u.last_name, 
         u.email ,
         r.role_id , 
-        r."role" 
+        r."role",
+        u."image" 
         from user_reimbursement.users u left join user_reimbursement.roles r on u."role" = r.role_id 
         where u.user_id = $1;`,
         [userId])
         await client.query('COMMIT;')
+        console.log(result.rows[0])
         return UserDTOtoUserConvertor(result.rows[0])
     }
     catch(e){
@@ -163,7 +174,8 @@ export async function getUsernameAndPassword(username:string, password:string):P
         u.last_name, 
         u.email , 
         r.role_id , 
-        r."role" 
+        r."role",
+        u."image"
         from user_reimbursement.users u left join user_reimbursement.roles r on u."role" = r.role_id
         where u.username = $1 and u.password = $2;`,[username, password])
         if(results.rowCount === 0 ){
@@ -206,9 +218,9 @@ export async function saveNewUser(newUser:User):Promise<User>{
         let roleId = 3 
 
         let results = await client.query(` insert into user_reimbursement.users
-        ("username", "password", "first_name", "last_name", "email", "role")
-        values($1,$2,$3,$4,$5,$6) returning "user_id";`, 
-        [newUser.username, newUser.password, newUser.firstName, newUser.lastName, newUser.email, roleId])
+        ("username", "password", "first_name", "last_name", "email", "role", "image")
+        values($1,$2,$3,$4,$5,$6,$7) returning "user_id";`, 
+        [newUser.username, newUser.password, newUser.firstName, newUser.lastName, newUser.email, roleId, newUser.image])
         
         newUser.userId = results.rows[0].user_id
         await client.query('COMMIT;')

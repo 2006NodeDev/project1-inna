@@ -8,6 +8,9 @@ import { BadCredentialsError } from './errors/BadCredentialsError'
 //import { authenticationMiddleware } from './middleware/authentication-middleware'
 import { getUsernameAndPassword } from './daos/SQL/users-dao'
 import { corsFilter } from './middleware/cors-filter'
+import { NewUserInputError } from './errors/NewUserInputError'
+import { User } from './models/User'
+import { saveNewUserService } from './services/user-service'
 // mport { reimbursementRouter } from './routers/reimbursement-router'
 
 const app = express()
@@ -25,6 +28,38 @@ app.use('/reimbursements', reimbursementRouter);
 
 app.get('/health', (req:Request,res:Response)=>{
     res.sendStatus(200)
+})
+
+app.post('/signUp', async (req:Request, res:Response, next:NextFunction) => {
+    let {username,
+        password,
+        firstName,
+        lastName,
+        email, 
+        image} = req.body;
+        
+        if(!username|| !password || !firstName || !lastName || !email || !image){
+            next(new NewUserInputError)
+        }
+        else{
+            console.log("in the else")
+            let newUser: User = {
+                userId: 0,
+                username,
+                password,
+                firstName,
+                lastName,
+                email,
+                role: null, 
+                image}
+            try{
+                let savedUser = await saveNewUserService(newUser)
+                res.status(201).send("Created")
+                res.json(savedUser)
+            } catch (e){
+                next(e)
+            }   
+        }
 })
 
 app.post('/login', async (req:Request, res:Response, next:NextFunction) =>{

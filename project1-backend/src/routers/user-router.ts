@@ -1,18 +1,18 @@
 import express, { Request, Response, NextFunction} from 'express'
 import { UserIdInputError } from '../errors/UserIdInputError'
 import { User } from '../models/User'
-import { getAllUsers, getUserById, patchUser, saveNewUser } from '../daos/SQL/users-dao'
-import { authorizationMiddleware } from '../middleware/authorization-middleware'
+import { patchUser } from '../daos/SQL/users-dao'
+//import { authorizationMiddleware } from '../middleware/authorization-middleware'
 import { authenticationMiddleware } from '../middleware/authentication-middleware'
 import { UnauthorizedEndPointError } from '../errors/UnathorizedEndPointError'
-import { NewUserInputError } from '../errors/NewUserInputError'
-import { getAllUsersService, getUserByIDService, saveNewUserService } from '../services/user-service'
+//import { NewUserInputError } from '../errors/NewUserInputError'
+import { getAllUsersService, getUserByIDService } from '../services/user-service'
 
 export let userRouter = express.Router()
 
 userRouter.use(authenticationMiddleware);
 
-userRouter.get('/', authorizationMiddleware(['admin','finance-manager']), async  (req:Request, res:Response, next:NextFunction) => {
+userRouter.get('/', async (req:Request, res:Response, next:NextFunction) => {
     try{
         let allUsers = await getAllUsersService()
         res.json(allUsers)
@@ -22,7 +22,7 @@ userRouter.get('/', authorizationMiddleware(['admin','finance-manager']), async 
     }
 })
 
-userRouter.get('/:id', authorizationMiddleware(['admin','finance-manager','user']), async (req:Request, res:Response, next:NextFunction) => {
+userRouter.get('/:id', async (req:Request, res:Response, next:NextFunction) => {
     let {id} = req.params;
     if(isNaN(+id)){
         next(new UserIdInputError)
@@ -40,7 +40,7 @@ userRouter.get('/:id', authorizationMiddleware(['admin','finance-manager','user'
     }
 })
 
-userRouter.patch('/', authorizationMiddleware(['admin']), async (req:Request, res:Response, next:NextFunction) => {
+userRouter.patch('/', async (req:Request, res:Response, next:NextFunction) => {
     let id = req.body.userId;
     console.log(req.body);
     console.log(id)
@@ -55,7 +55,8 @@ userRouter.patch('/', authorizationMiddleware(['admin']), async (req:Request, re
             firstName: req.body.firstName, 
             lastName: req.body.lastName, 
             email: req.body.email,
-            role: req.body.role
+            role: req.body.role,
+            image:req.body.image
         }
         console.log("in the router, just set the user")
         console.log(user)
@@ -68,33 +69,35 @@ userRouter.patch('/', authorizationMiddleware(['admin']), async (req:Request, re
     }
 })
     
-userRouter.post('/', async (req:Request, res:Response, next:NextFunction) => {
-    let {username,
-        password,
-        firstName,
-        lastName,
-        email} = req.body;
+// userRouter.post('/', async (req:Request, res:Response, next:NextFunction) => {
+//     let {username,
+//         password,
+//         firstName,
+//         lastName,
+//         email, 
+//         image} = req.body;
         
-        if(!username|| !password || !firstName || !lastName || !email ){
-            next(new NewUserInputError)
-        }
-        else{
-            console.log("in the else")
-            let newUser: User = {
-                userId: 0,
-                username,
-                password,
-                firstName,
-                lastName,
-                email,
-                role: null}
-            try{
-                let savedUser = await saveNewUserService(newUser)
-                res.status(201).send("Created")
-                res.json(savedUser)
-            } catch (e){
-                next(e)
-            }   
-        }
-})
+//         if(!username|| !password || !firstName || !lastName || !email || !image){
+//             next(new NewUserInputError)
+//         }
+//         else{
+//             console.log("in the else")
+//             let newUser: User = {
+//                 userId: 0,
+//                 username,
+//                 password,
+//                 firstName,
+//                 lastName,
+//                 email,
+//                 role: null, 
+//                 image}
+//             try{
+//                 let savedUser = await saveNewUserService(newUser)
+//                 res.status(201).send("Created")
+//                 res.json(savedUser)
+//             } catch (e){
+//                 next(e)
+//             }   
+//         }
+// })
  
