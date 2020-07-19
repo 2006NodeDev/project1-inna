@@ -1,10 +1,11 @@
 import React, { FunctionComponent, SyntheticEvent, useState } from 'react'
 import { Button, TextField, Grid, Box } from '@material-ui/core'
-//import { toast } from 'react-toastify'
 import { User } from '../../models/User'
 import { userUpdateUser } from '../../remote/users-api/user-update-user'
 import { RouteComponentProps } from 'react-router'
-import { toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 
 //export const EditUserComponent:FunctionComponent<any> = (props) => {
 interface IUserDisplayProps extends RouteComponentProps{
@@ -146,6 +147,7 @@ export const EditUserComponent:FunctionComponent<any> = (props) => {
                 </Box>
             </form>
             </Grid>
+            < ToastContainer/>
         </div>
     )
 }

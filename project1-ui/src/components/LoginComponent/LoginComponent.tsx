@@ -21,12 +21,15 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     paper:{
-        backgroundColor:'#b39ddb',
+        // backgroundColor:'#b39ddb',
         width: theme.spacing(42),
         height: theme.spacing(39)
     },
     title:{
         color:'white'
+    },
+    input:{
+        color:'#b39ddb'
     }
 }));
 
@@ -66,13 +69,13 @@ export const LoginComponent:FunctionComponent<ILoginProps> = (props) => {
                     <Typography variant='h4'>Account Login</Typography>
                     </Box>
                         <Box m={1} pt={2}>
-                            <TextField id="outlined-basic" label="Username" variant="outlined" value={username} onChange={updateUsername}/>
+                            <TextField id="outlined-basic" className={classes.input} label="Username" variant="outlined" value={username} onChange={updateUsername}/>
                         </Box>
                         <Box m={1}>
                             <TextField id="outlined-basic" type="password" label="Password" variant="outlined" value={password} onChange={updatePassword}/>
                         </Box>
                     <Box m={1} pt={1}>
-                        <Button type="submit" variant="contained" color="primary">Sign In</Button>
+                        <Button type="submit" variant="contained"  style={{ background: '#b39ddb' }}>Sign In</Button>
                     </Box>
             </form>
             <Box m={1} pt={1}>

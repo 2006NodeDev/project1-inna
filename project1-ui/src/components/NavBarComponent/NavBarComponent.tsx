@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
       flexGrow: 1,
+      color: 'black'
     },
   }));
   
@@ -41,7 +42,7 @@ export const NavBarComponent:FunctionComponent<any> = (props)=>{
 
     return(
         <nav>
-        <AppBar position='static'>
+        <AppBar position='static' style={{ background: '#b39ddb' }}>
             <Toolbar>
           {/* <IconButton onClick ={handleClick} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon/>
