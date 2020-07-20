@@ -4,6 +4,7 @@ import { getAllUsers, getUserById, saveNewUser } from "../daos/SQL/users-dao";
 import { saveProfilePicture } from "../daos/Cloud-Storage/user-images";
 import { bucketBaseUrl } from "../daos/Cloud-Storage";
 //import { saveNewUser } from "../daos/SQL/index.ts"
+import { expressEventEmitter, customExpressEvents } from "../event-listeners";
 
 
 //calls the dao, easier to expand a function that already exists instead of inserting a new function
@@ -29,6 +30,7 @@ export async function saveNewUserService(newUser:User):Promise<User>{
     let savedUser = await saveNewUser(newUser)
 
     await saveProfilePicture(contentType, imageBase64Data, `users/${newUser.username}/profile.${contentType}`)
+    expressEventEmitter.emit(customExpressEvents.NEW_USER, newUser)
     return savedUser
 } catch(e){
     console.log(e)

@@ -12,7 +12,10 @@ import { NewUserInputError } from './errors/NewUserInputError'
 import { User } from './models/User'
 import { saveNewUserService } from './services/user-service'
 // mport { reimbursementRouter } from './routers/reimbursement-router'
+import { userTopic } from './messaging/index'
+import './event-listeners/new-user'
 
+console.log(userTopic)
 const app = express()
 
 app.use(express.json({limit:'50mb'}))
