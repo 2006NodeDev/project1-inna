@@ -1,8 +1,12 @@
 import React, { FunctionComponent } from 'react';
-import { AppBar, Toolbar, IconButton, Button, Typography, Menu, MenuItem } from '@material-ui/core';
+import { AppBar, Toolbar, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
-import {Link} from 'react-router-dom';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import { User } from '../../models/User';
+
+interface NavProps extends RouteComponentProps{
+  user:User | null
+};
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,44 +24,21 @@ const useStyles = makeStyles((theme) => ({
 
 export const NavBarComponent:FunctionComponent<any> = (props)=>{
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-        };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-
-    // let menuItems = []
-    // menuItems.push(<MenuItem onClick={handleClose}><Link to='/login/'>Login</Link></MenuItem>)
-    // if(props.user){
-    //   menuItems.push([<MenuItem onClick={handleClose}><Link to='/clicker'>Clicker</Link></MenuItem>,
-    //   <MenuItem onClick={handleClose}>My account</MenuItem>,
-    //   <MenuItem onClick={handleClose}>Logout</MenuItem>,
-    //   <MenuItem onClick={handleClose}><Link to={`/profile/${(props.user)?props.user.userId : '0'}`}>My Profile</Link></MenuItem> ])
-    // }
+    let button = []
+    console.log(props.user)
+    if(props.user != null){
+      button.push(<Button color="inherit"><Link to='/logout'>Logout</Link></Button>)
+    }
 
     return(
         <nav>
         <AppBar position='static' style={{ background: '#b39ddb' }}>
             <Toolbar>
-          {/* <IconButton onClick ={handleClick} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon/>
-          </IconButton>
-          <Menu id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}>
-                    {menuItems}       
-          </Menu> */}
           <Typography variant="h6" className={classes.title}>
             innaConnection
           </Typography>
-          <Button color="inherit">Logout</Button>
+          {button}
         </Toolbar>
         </AppBar>
         </nav>

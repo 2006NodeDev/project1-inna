@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState, useEffect } from 'react'
 import { UserDisplayComponent } from '../UserDisplayComponent/UserDisplayComponent'
 import { User } from '../../models/User'
-import { useParams, Redirect } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { getUserById } from '../../remote/users-api/get-user-by-id'
 
 export const ProfileComponent:FunctionComponent<any> = (props)=>{
@@ -15,9 +15,11 @@ export const ProfileComponent:FunctionComponent<any> = (props)=>{
             changeUserProfile(userInfo)
         }
 
-        if(!userProfile || userProfile.userId !== userId){
+        if(!userProfile || userProfile.userId !== +userId){
             getUser()
+            console.log('in the getUser')
         }
+        console.log(userProfile)
     })
 
     

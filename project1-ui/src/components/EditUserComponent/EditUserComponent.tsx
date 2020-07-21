@@ -98,7 +98,6 @@ export const EditUserComponent:FunctionComponent<any> = (props) => {
 
     const updateUser = async (e:SyntheticEvent)=>{
         e.preventDefault()
-        e.preventDefault()
         if(password !== confirmPassword){
            toast.error('Passwords Do Not Match')
         }
@@ -124,6 +123,10 @@ export const EditUserComponent:FunctionComponent<any> = (props) => {
         }
         
     }
+
+    const goBack = async (e:any) => {
+        props.history.push(`/profile/${props.user.userId}`)
+    }
         
     return(
         <div>
@@ -142,12 +145,18 @@ export const EditUserComponent:FunctionComponent<any> = (props) => {
                 <label htmlFor='file'>Profile Picture: </label>
                 <input type='file' name='file' accept='image/*' onChange={updateImage}/>
                 <img src={image}/>
-                <Box m={1} pt={2}>
-                <Button variant="contained" type="submit">Submit</Button>
+                <Grid item xs={12}>
+                <Box m = {2} pt= {2} pr={2}>
+
+                <Button variant="contained" onClick={goBack} style={{margin: "6px"}}>Cancel</Button>
+
+                <Button variant="contained" type="submit" style={{margin: "6px"}}>Submit</Button>
+    
                 </Box>
+                </Grid>
             </form>
             </Grid>
-            < ToastContainer/>
+            {/* < ToastContainer/> */}
         </div>
     )
 }

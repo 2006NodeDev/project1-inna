@@ -11,11 +11,11 @@ import { corsFilter } from './middleware/cors-filter'
 import { NewUserInputError } from './errors/NewUserInputError'
 import { User } from './models/User'
 import { saveNewUserService } from './services/user-service'
-// mport { reimbursementRouter } from './routers/reimbursement-router'
-import { userTopic } from './messaging/index'
+//import { userTopic } from './messaging/index'
 import './event-listeners/new-user'
+import { NoUserToLogoutError } from './errors/NoUserToLogoutError'
 
-console.log(userTopic)
+//console.log(userTopic)
 const app = express()
 
 app.use(express.json({limit:'50mb'}))
@@ -76,6 +76,21 @@ app.post('/login', async (req:Request, res:Response, next:NextFunction) =>{
             let user = await getUsernameAndPassword(username, password)
             req.session.user = user
             res.json(user)
+        }
+        catch(e){
+            next(e)
+        }
+    }
+})
+
+app.delete('/logout', async (req:Request, res:Response, next:NextFunction) => {
+    if (!req.session.user){
+        next(new NoUserToLogoutError())
+    }
+    else {
+        try{
+            req.session.user = null
+            res.json(req.session.user)
         }
         catch(e){
             next(e)

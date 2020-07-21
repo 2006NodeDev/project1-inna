@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import { User } from '../../models/User'
 import { userSaveUser } from '../../remote/users-api/user-save-user'
 
+
 export const NewUserComponent:FunctionComponent<any> = (props) => {
     let [username, changeUsername] = useState('')
     let [password, changePassword] = useState('')
@@ -59,27 +60,37 @@ export const NewUserComponent:FunctionComponent<any> = (props) => {
            toast.error('Passwords Do Not Match')
         }
         else{
-            let newUser:User = {
-                username,
-                password,
-                firstName,
-                lastName,
-                email,
-                userId:0,
-                role: {
-                    roleId:3,
-                    role:"user"
-                },
-                image
+            if(username && password && firstName && lastName && email && image){
+                let newUser:User = {
+                    username,
+                    password,
+                    firstName,
+                    lastName,
+                    email,
+                    userId:0,
+                    role: {
+                        roleId:3,
+                        role:"user"
+                    },
+                    image
+                }
+                console.log('new user component')
+                console.log(newUser)
+                let res = await userSaveUser(newUser) 
+                console.log(res)
+                toast.success('Created')
+                props.history.push('/login')
             }
-            console.log('new user component')
-            console.log(newUser)
-            let res = await userSaveUser(newUser) 
-            // props.history.push('/login')
+            else{
+                toast.error('Please Fill Out All User Information')
+            }
+            
         }
     }
 
-        
+    const goBack = async (e:any) => {
+        props.history.push('/login')
+    }     
 
     return(
         <div>
@@ -98,9 +109,12 @@ export const NewUserComponent:FunctionComponent<any> = (props) => {
                 <label htmlFor='file'>Profile Picture: </label>
                 <input type='file' name='file' accept='image/*' onChange={updateImage}/>
                 <img src={image}/>
-                <Box m={1} pt={2}>
-                <Button variant="contained" type="submit">Submit</Button>
+                <Grid item xs={12}>
+                <Box m = {2} pt= {2} pr={2}>
+                <Button variant="contained" onClick={goBack} style={{margin: "6px"}}>Cancel</Button>
+                <Button variant="contained" type="submit" style={{margin: "6px"}}>Submit</Button>
                 </Box>
+                </Grid>
             </form>
             </Grid>
         </div>

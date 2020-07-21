@@ -1,14 +1,10 @@
-import React, { FunctionComponent, SyntheticEvent } from 'react';
+import React, { FunctionComponent } from 'react';
 import { User } from '../../models/User';
-import Paper from '@material-ui/core/Paper'
-//import Typography from '@material-ui/core/Typography'
 import makeStyles from '@material-ui/core/styles/makeStyles';
-//import Button from '@material-ui/core/Button';
-import { TableContainer, TableCell, Table, TableBody, TableRow, TableHead, Box, Grid, CardMedia, Card } from '@material-ui/core';
+import { TableCell, Table, TableBody, TableRow, TableHead, Box, Grid } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
-import { getUserById } from '../../remote/users-api/get-user-by-id';
 
 interface IUserDisplayProps{
     user:User | null
@@ -19,11 +15,17 @@ const useStyles = makeStyles({
       minWidth: 650,
     },
     large: {
-      width: 230,
-      height: 230
+      width: 225,
+      height: 225,
     },
-    
   });
+
+  const defaultProps = {
+    borderColor: '#b39ddb',
+    m: 1,
+    border: 6,
+    style: { width: '15rem', height: '15rem' },
+  };
 
 
 export const UserDisplayComponent:FunctionComponent<IUserDisplayProps> = (props) =>{
@@ -32,19 +34,14 @@ export const UserDisplayComponent:FunctionComponent<IUserDisplayProps> = (props)
     return (
           <Grid container>
           <Grid item direction="column" justify="flex-start" alignItems="flex-start">
-          {/* <Card className={classes.root}>
-          <CardMedia
-          className={classes.media}
-          image={props.user?.image}
-          />
-          </Card> */}
-          <Box m={4} pt={2}>
+          <Box m={4} pt={1}>
+          {/* <Box borderRadius="75%" {...defaultProps} > */}
           <Avatar src={props.user?.image} className={classes.large}/>
+          {/* </Box> */}
           </Box>
-          {/* <img src={props.user?.image}/> */}
           </Grid>
           <Grid item direction="column" justify="flex-end" alignItems="flex-end">
-            <Box width="50%">
+            <Box width="50%" >
             <Table className={classes.table} aria-label="simple table">
               <Grid item xs={12} justify='flex-end'>
               <TableHead><h1>{props.user?.firstName} {props.user?.lastName} <Link to={`/profile/edit/${(props.user)?props.user.userId : '0' }`}><EditIcon/></Link></h1></TableHead>

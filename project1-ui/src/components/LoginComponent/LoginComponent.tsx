@@ -5,6 +5,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import {RouteComponentProps} from 'react-router-dom'
 import {Link} from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 interface ILoginProps extends RouteComponentProps{
     changeCurrentUser:(newUser:any)=>void
@@ -52,11 +53,17 @@ export const LoginComponent:FunctionComponent<ILoginProps> = (props) => {
     const loginSubmit = async (e:SyntheticEvent) => {
         e.preventDefault()
         let res = await userLogin(username, password)
-        props.changeCurrentUser(res)
-        changePassword('')
-        console.log(res)
-        console.log(res.userId)
-        props.history.push(`/profile/${(res)?res.userId : '0' }`)
+        if(res === undefined){
+            toast.error('Incorrect Username or Password')
+            props.history.push('/login')
+        }
+        else{
+            props.changeCurrentUser(res)
+            changePassword('')
+            console.log(res)
+            console.log(res.userId)
+            props.history.push(`/profile/${(res)?res.userId : '0' }`)
+        }
     }
     
     return (
@@ -72,7 +79,7 @@ export const LoginComponent:FunctionComponent<ILoginProps> = (props) => {
                             <TextField id="outlined-basic" className={classes.input} label="Username" variant="outlined" value={username} onChange={updateUsername}/>
                         </Box>
                         <Box m={1}>
-                            <TextField id="outlined-basic" type="password" label="Password" variant="outlined" value={password} onChange={updatePassword}/>
+                            <TextField id="outlined-basic2" type="password" label="Password" variant="outlined" value={password} onChange={updatePassword}/>
                         </Box>
                     <Box m={1} pt={1}>
                         <Button type="submit" variant="contained"  style={{ background: '#b39ddb' }}>Sign In</Button>

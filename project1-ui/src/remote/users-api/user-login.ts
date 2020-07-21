@@ -1,5 +1,4 @@
 import { userClient } from "."
-import { User } from "../../models/User"
 
 
 export const userLogin = async (username:string, password:string) => {
