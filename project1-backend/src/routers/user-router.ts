@@ -1,12 +1,12 @@
 import express, { Request, Response, NextFunction} from 'express'
 import { UserIdInputError } from '../errors/UserIdInputError'
 import { User } from '../models/User'
-import { patchUser } from '../daos/SQL/users-dao'
+// import { patchUser } from '../daos/SQL/users-dao'
 //import { authorizationMiddleware } from '../middleware/authorization-middleware'
 import { authenticationMiddleware } from '../middleware/authentication-middleware'
 import { UnauthorizedEndPointError } from '../errors/UnathorizedEndPointError'
 //import { NewUserInputError } from '../errors/NewUserInputError'
-import { getAllUsersService, getUserByIDService } from '../services/user-service'
+import { getAllUsersService, getUserByIDService, patchUserService } from '../services/user-service'
 
 export let userRouter = express.Router()
 
@@ -49,7 +49,7 @@ userRouter.patch('/', async (req:Request, res:Response, next:NextFunction) => {
     }
     else{
         let user: User = {
-            userId: req.body.userId,
+            userId: id,
             username: req.body.username, 
             password: req.body.password, 
             firstName: req.body.firstName, 
@@ -59,9 +59,10 @@ userRouter.patch('/', async (req:Request, res:Response, next:NextFunction) => {
             image:req.body.image
         }
         console.log("in the router, just set the user")
-        console.log(user)
+        console.log(user.userId )
+        console.log(user.username)
         try{
-            let updatedUser = await patchUser(user)
+            let updatedUser = await patchUserService(user)
             res.json(updatedUser)
         } catch (e){
             next(e)
