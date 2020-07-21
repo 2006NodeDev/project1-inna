@@ -82,7 +82,7 @@ export const LoginComponent:FunctionComponent<ILoginProps> = (props) => {
                             <TextField id="outlined-basic2" type="password" label="Password" variant="outlined" value={password} onChange={updatePassword}/>
                         </Box>
                     <Box m={1} pt={1}>
-                        <Button type="submit" variant="contained"  style={{ background: '#b39ddb' }}>Sign In</Button>
+                        <Button type="submit" variant="contained"  style={{ background: '#4dd0e1' }}>Sign In</Button>
                     </Box>
             </form>
             <Box m={1} pt={1}>

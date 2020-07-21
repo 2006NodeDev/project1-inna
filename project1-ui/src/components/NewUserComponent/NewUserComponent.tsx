@@ -112,7 +112,7 @@ export const NewUserComponent:FunctionComponent<any> = (props) => {
                 <Grid item xs={12}>
                 <Box m = {2} pt= {2} pr={2}>
                 <Button variant="contained" onClick={goBack} style={{margin: "6px"}}>Cancel</Button>
-                <Button variant="contained" type="submit" style={{margin: "6px"}}>Submit</Button>
+                <Button variant="contained" type="submit" style={{margin: "6px", background: '#4dd0e1'}}>Submit</Button>
                 </Box>
                 </Grid>
             </form>

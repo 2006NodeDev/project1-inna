@@ -33,9 +33,9 @@ export const NavBarComponent:FunctionComponent<any> = (props)=>{
 
     return(
         <nav>
-        <AppBar position='static' style={{ background: '#b39ddb' }}>
+        <AppBar position='static' style={{ background: '#4dd0e1' }}>
             <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h5" className={classes.title}>
             innaConnection
           </Typography>
           {button}

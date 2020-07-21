@@ -1,11 +1,8 @@
 import express, { Request, Response, NextFunction} from 'express'
 import { UserIdInputError } from '../errors/UserIdInputError'
 import { User } from '../models/User'
-// import { patchUser } from '../daos/SQL/users-dao'
-//import { authorizationMiddleware } from '../middleware/authorization-middleware'
 import { authenticationMiddleware } from '../middleware/authentication-middleware'
 import { UnauthorizedEndPointError } from '../errors/UnathorizedEndPointError'
-//import { NewUserInputError } from '../errors/NewUserInputError'
 import { getAllUsersService, getUserByIDService, patchUserService } from '../services/user-service'
 
 export let userRouter = express.Router()
@@ -69,36 +66,5 @@ userRouter.patch('/', async (req:Request, res:Response, next:NextFunction) => {
         } 
     }
 })
-    
-// userRouter.post('/', async (req:Request, res:Response, next:NextFunction) => {
-//     let {username,
-//         password,
-//         firstName,
-//         lastName,
-//         email, 
-//         image} = req.body;
-        
-//         if(!username|| !password || !firstName || !lastName || !email || !image){
-//             next(new NewUserInputError)
-//         }
-//         else{
-//             console.log("in the else")
-//             let newUser: User = {
-//                 userId: 0,
-//                 username,
-//                 password,
-//                 firstName,
-//                 lastName,
-//                 email,
-//                 role: null, 
-//                 image}
-//             try{
-//                 let savedUser = await saveNewUserService(newUser)
-//                 res.status(201).send("Created")
-//                 res.json(savedUser)
-//             } catch (e){
-//                 next(e)
-//             }   
-//         }
-// })
+
  

@@ -56,10 +56,10 @@ export const LogoutComponent:FunctionComponent<ILogoutProps> = (props) => {
                 </Box>
                 <Box m={2} pt={2}>
                     <Box m={1} pt={2}>
-                    <Button variant="contained"  onClick={handleLogout} style={{ background: '#b39ddb' }}>Logout</Button>
+                    <Button variant="contained"  onClick={handleLogout} style={{ background: '#4dd0e1' }}>Logout</Button>
                     </Box>
                     <Box m={1} pt={2}>
-                    <Button variant="contained" onClick={goBack} style={{ background: '#b39ddb' }}>Cancel</Button>
+                    <Button variant="contained" onClick={goBack} style={{ background: '#eeeeee' }}>Cancel</Button>
                     </Box>
                 </Box>
         </Paper>

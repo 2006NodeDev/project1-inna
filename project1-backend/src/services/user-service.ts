@@ -1,9 +1,7 @@
 import { User } from "../models/User";
 import { getAllUsers, getUserById, saveNewUser, patchUser } from "../daos/SQL/users-dao";
-// import { getAllUsers, getUserById} from "../daos/SQL/users-dao";
 import { saveProfilePicture } from "../daos/Cloud-Storage/user-images";
 import { bucketBaseUrl } from "../daos/Cloud-Storage";
-//import { saveNewUser } from "../daos/SQL/index.ts"
 import { expressEventEmitter, customExpressEvents } from "../event-listeners";
 
 
@@ -22,14 +20,15 @@ export async function saveNewUserService(newUser:User):Promise<User>{
     let base64Image = newUser.image
     let [dataType, imageBase64Data] = base64Image.split(';base64,')
     let contentType = dataType.split('/').pop()
+    let date = Date.now()
 
     if(newUser.image){
-        newUser.image = `${bucketBaseUrl}/users/${newUser.username}/profile.${contentType}`
+        newUser.image = `${bucketBaseUrl}/users/${newUser.username}/${date}/profile.${contentType}`
     }
 
     let savedUser = await saveNewUser(newUser)
 
-    await saveProfilePicture(contentType, imageBase64Data, `users/${newUser.username}/profile.${contentType}`)
+    await saveProfilePicture(contentType, imageBase64Data, `users/${newUser.username}/${date}/profile.${contentType}`)
     expressEventEmitter.emit(customExpressEvents.NEW_USER, newUser)
     return savedUser
 } catch(e){
@@ -44,17 +43,29 @@ export async function patchUserService(updateUser:User):Promise<User>{
     console.log('in the user update')
     console.log(updateUser.userId)
     console.log(updateUser.username)
-    let base64Image = updateUser.image
-    let [dataType, imageBase64Data] = base64Image.split(';base64,')
-    let contentType = dataType.split('/').pop()
+    let date = Date.now()
 
+    let savedUser = undefined
     if(updateUser.image){
-        updateUser.image = `${bucketBaseUrl}/users/${updateUser.userId}/profile.${contentType}`
+        console.log("in the update image")
+        let base64Image = updateUser.image
+        let [dataType, imageBase64Data] = base64Image.split(';base64,')
+        let contentType = dataType.split('/').pop()
+
+        let userInfo = await getUserById(updateUser.userId)
+
+        console.log(userInfo.userId)
+        console.log(userInfo.username)
+
+        updateUser.image = `${bucketBaseUrl}/users/${userInfo.username}/${date}/profile.${contentType}`
+        savedUser = await patchUser(updateUser)
+        await saveProfilePicture(contentType, imageBase64Data, `users/${userInfo.username}/${date}/profile.${contentType}`)
+    }
+    else{
+        savedUser = await patchUser(updateUser)
     }
 
-    let savedUser = await patchUser(updateUser)
-
-    await saveProfilePicture(contentType, imageBase64Data, `users/${updateUser.userId}/profile.${contentType}`)
+    //await saveProfilePicture(contentType, imageBase64Data, `users/${updateUser.userId}/profile.${contentType}`)
     //expressEventEmitter.emit(customExpressEvents.NEW_USER, updateUser)
     return savedUser
 } catch(e){

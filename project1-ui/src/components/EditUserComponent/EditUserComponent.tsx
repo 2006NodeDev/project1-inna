@@ -114,7 +114,7 @@ export const EditUserComponent:FunctionComponent<any> = (props) => {
                     role:"user"
                 },
                 image}
-        
+
         console.log('update user component')
         console.log(updateUser)
         let res = await userUpdateUser(updateUser) 
@@ -150,7 +150,7 @@ export const EditUserComponent:FunctionComponent<any> = (props) => {
 
                 <Button variant="contained" onClick={goBack} style={{margin: "6px"}}>Cancel</Button>
 
-                <Button variant="contained" type="submit" style={{margin: "6px"}}>Submit</Button>
+                <Button variant="contained" type="submit" style={{margin: "6px", background: '#4dd0e1' }}>Submit</Button>
     
                 </Box>
                 </Grid>

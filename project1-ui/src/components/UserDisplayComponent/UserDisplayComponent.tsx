@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { User } from '../../models/User';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { TableCell, Table, TableBody, TableRow, TableHead, Box, Grid } from '@material-ui/core';
+import { TableCell, Table, TableBody, TableRow, TableHead, Box, Grid, Paper } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import { Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
@@ -10,18 +10,18 @@ interface IUserDisplayProps{
     user:User | null
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     table: {
       minWidth: 650,
     },
     large: {
-      width: 225,
-      height: 225,
+      width: 210,
+      height: 210,
     },
-  });
+  }));
 
   const defaultProps = {
-    borderColor: '#b39ddb',
+    borderColor: '#4dd0e1',
     m: 1,
     border: 6,
     style: { width: '15rem', height: '15rem' },
@@ -34,10 +34,14 @@ export const UserDisplayComponent:FunctionComponent<IUserDisplayProps> = (props)
     return (
           <Grid container>
           <Grid item direction="column" justify="flex-start" alignItems="flex-start">
-          <Box m={4} pt={1}>
-          {/* <Box borderRadius="75%" {...defaultProps} > */}
+          <Box m={4} pt={2} pr={2}>
+          <Box borderRadius="75%" {...defaultProps} >
+          {/* <Paper className={classes.paper}> */}
+            <Box m={1} pt={1} pr={2} pb={3} pl={1}>
           <Avatar src={props.user?.image} className={classes.large}/>
-          {/* </Box> */}
+          </Box>
+          {/* </Paper> */}
+          </Box>
           </Box>
           </Grid>
           <Grid item direction="column" justify="flex-end" alignItems="flex-end">
