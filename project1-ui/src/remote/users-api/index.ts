@@ -1,7 +1,8 @@
 import axios from 'axios'
+import { lbBaseUrl } from '../../environment'
 
 export const userClient = axios.create({
-    baseURL:'http://localhost:2006',
+    baseURL:lbBaseUrl,
     headers:{
         'Content-Type': 'application/json'
     },
